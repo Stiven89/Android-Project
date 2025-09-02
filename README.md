@@ -1,8 +1,18 @@
-# Nombre de la aplicación
+# PetCare 🐾
 
-Reemplace este texto con una descripción de su aplicación. Revise el archivo [HELP.md](HELP.md) donde hay mas información sobre como usar esta plantilla.
+PetCare es una aplicación móvil diseñada para apoyar a los dueños de mascotas en la organización y cuidado de sus animales. La app ofrece herramientas prácticas como:
 
-Autor(es): Nombre del estudiante
+⦁	📅 Recordatorios de vacunas y citas veterinarias
+⦁	
+⦁	🐕 Agenda de paseos y actividades
+⦁	
+⦁	🍖 Control de alimentación
+⦁	
+⦁	🏥 Directorio de veterinarios cercanos (opcional, se implementará según el alcance del tiempo disponible)
+
+Con PetCare, los usuarios podrán tener un mejor control del bienestar de sus mascotas, manteniendo toda la información importante en un solo lugar.
+
+Autor(es): Brandon Stiven Ganzo Murcia
 
 ## Referencias
 
