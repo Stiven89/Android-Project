@@ -24,12 +24,12 @@ La aplicación tendrá la siguientes pantallas
 
 5. Pantalla 5: Home de la App
 
-![screen8](images/home_page.jpg)
+![screen8](images/5.jpeg)
 
 
 6. Pantalla 5: Artículo 1 (¿Como subirle las defensas a tu perro?)
 
-![screen8](images/artículo1.jpg)
+![screen8](images/6.jpeg)
 
 
 7. Pantalla 7: Artículo 2 (¿Rutinas de ejercicio y juegos recomendados para tu mascota?)
@@ -49,7 +49,7 @@ La aplicación tendrá la siguientes pantallas
 
 10. Pantalla 10: Recordatorios
 
-![screen10](images/10.png)
+![screen10](images/10.jpeg)
 
 
 11. Pantalla 11: Lista de recordatorios
@@ -59,12 +59,12 @@ La aplicación tendrá la siguientes pantallas
 
 12. Pantalla 12: Control de Alimentacion
 
-![screen12](images/12.png)
+![screen12](images/12.jpeg)
 
 
 13. Pantalla 13: Veterinarias Cercanas
 
-![screen13](images/13.png)
+![screen13](images/13.jpeg)
 
 
 
