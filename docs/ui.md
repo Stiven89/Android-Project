@@ -7,39 +7,39 @@ La aplicación tendrá la siguientes pantallas
 ![screen1](images/1.png)
 
 
-2. Pantalla 2: Informacion de la App
-
-![screen2](images/2.png)
-
-
-3. Pantalla 3: Informacion de la App
-
-![screen3](images/3.png)
-
-
-4. Pantalla 4: Informacion de la App
-
-![screen4](images/4.png)
-
-
-5. Pantalla 5: Ingresar con Credenciales ya Existentes
+2. Pantalla 2: Ingresar con Credenciales ya Existentes
 
 ![screen5](images/5.png)
 
 
-6. Pantalla 6: Crear Cuenta
+3. Pantalla 3: Crear Cuenta
 
 ![screen6](images/6.png)
 
 
-7. Pantalla 7: Reestablecer Contraseña
+4. Pantalla 4: Reestablecer Contraseña
 
 ![screen7](images/7.png)
 
 
-8. Pantalla 8: Home de la App
+5. Pantalla 5: Home de la App
 
-![screen8](images/8.png)
+![screen8](images/home_page.jpg)
+
+
+6. Pantalla 5: Artículo 1 (¿Como subirle las defensas a tu perro?)
+
+![screen8](images/artículo1.jpg)
+
+
+7. Pantalla 7: Artículo 2 (¿Rutinas de ejercicio y juegos recomendados para tu mascota?)
+
+![screen8](images/artículo2.jpg)
+
+
+8. Pantalla 8: Artículo 3 (Higiene básica y cuidado del pelaje)
+
+![screen8](images/artículo3_.jpg)
 
 
 9. Pantalla 9: Datos del Perfil
@@ -52,9 +52,9 @@ La aplicación tendrá la siguientes pantallas
 ![screen10](images/10.png)
 
 
-11. Pantalla 11: Agenda
+11. Pantalla 11: Lista de recordatorios
 
-![screen11](images/11.png)
+![screen11](images/to_do_list.jpg)
 
 
 12. Pantalla 12: Control de Alimentacion
@@ -73,4 +73,4 @@ La aplicación tendrá la siguientes pantallas
 
 - [Material Design: Foundations](https://m3.material.io/foundations)
 - [Material Design: Style](https://m3.material.io/styles)
-- [Figma](https://www.figma.com/es-la/)
+- [Figma]([https://www.figma.com/es-la/](https://www.figma.com/proto/H7i2oR6mBHplT9jN7KlP5K/Proyecto-Android--Actualizado-?node-id=2102-5&t=oGC1jv8xBZ9jyofL-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1))
