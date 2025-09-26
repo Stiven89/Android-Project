@@ -12,7 +12,9 @@ PetCare es una aplicación móvil diseñada para apoyar a los dueños de mascota
 
 Con PetCare, los usuarios podrán tener un mejor control del bienestar de sus mascotas, manteniendo toda la información importante en un solo lugar.
 
-Autor(es): Brandon Stiven Ganzo Murcia
+Autor(es):  Brandon Stiven Ganzo Murcia
+            Stefany Rojas Rojas 
+            Melissa vela Martinez
 
 ## Referencias
 
