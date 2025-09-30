@@ -180,7 +180,7 @@ fun UsefulArticlesSection() {
         )
         Spacer(modifier = Modifier.height(12.dp))
         ArticleCard(imageRes = R.drawable.articulo1)
-        ArticleCard(imageRes = R.drawable.articulo3)
+        ArticleCard(imageRes = R.drawable.articulo2)
         ArticleCard(imageRes = R.drawable.articulo2)
     }
 }
