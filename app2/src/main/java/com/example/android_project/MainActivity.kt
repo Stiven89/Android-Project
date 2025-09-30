@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.android_project.ui.theme.AndroidProjectTheme
 import com.example.android_project.ui.pantallas.Inicio
+import com.example.android_project.ui.pantallas.PantallaAlimentacion
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +34,10 @@ class MainActivity : ComponentActivity() {
 fun AppNavegacion() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "inicio") {
+    NavHost(navController = navController, startDestination = "PantallaAlimentacion") {
         composable("inicio") { Inicio(navController) }
         composable("login") { PantallaLogin() }
+        composable("PantallaAlimentacion") { PantallaAlimentacion() }
     }
 }
 
