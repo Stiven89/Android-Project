@@ -26,7 +26,7 @@ fun Inicio(navController: NavController) {
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Imagen del logo
+            // Imagen del logo (asegúrate de tener res/drawable/logo_petcare.png)
             Image(
                 painter = painterResource(id = R.drawable.logo_petcare),
                 contentDescription = "Logo Pet Care",
@@ -39,22 +39,21 @@ fun Inicio(navController: NavController) {
             Text(
                 text = "Pet Care",
                 color = Color(0xFF2196F3), // Azul
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 35.sp)
-
+                style = MaterialTheme.typography.headlineMedium.copy(fontSize = 35.sp)
             )
         }
 
-        // boton de "Acceder"
+        // Botón de "Acceder"
         TextButton(
-            onClick = { navController.navigate("login") }, // redirigir a la pantalla de iniciar sesion
+            onClick = { navController.navigate("login") },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 32.dp)
         ) {
             Text(
                 text = "Acceder",
-                color = Color(0xFF2196F3), // Azul
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 22.sp)
+                color = Color(0xFF2196F3),
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp)
             )
         }
     }
