@@ -15,6 +15,14 @@ import com.example.android_project.ui.pantallas.Inicio
 import com.example.android_project.ui.pantallas.PantallaAlimentacion
 import com.example.android_project.ui.pantallas.Home
 import com.example.android_project.ui.pantallas.Rutas
+import com.example.android_project.ui.pantallas.Articulo1
+import com.example.android_project.ui.pantallas.Articulo2
+import com.example.android_project.ui.pantallas.Crear_cuenta
+import com.example.android_project.ui.pantallas.Perfil
+import com.example.android_project.ui.pantallas.Recuperar_contrasenia
+import com.example.android_project.ui.pantallas.Articulo3
+import com.example.android_project.ui.pantallas.Agenda
+import com.example.android_project.ui.pantallas.Recordatorios
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +50,14 @@ fun AppNavegacion() {
         composable("inicio") { Inicio(navController) }
         composable("login") { PantallaLogin() }
         composable("alimentacion") { PantallaAlimentacion() }
+        composable("Articulo1") { Articulo1() }
+        composable("Articulo2") { Articulo2() }
+        composable("Crear_cuenta") { Crear_cuenta() }
+        composable("Agenda") { Agenda() }
+        composable("Recordatorios") { Recordatorios() }
+        composable("Articulo3") { Articulo3() }
+        composable("Perfil") { Perfil() }
+        composable("Recuperar_contrasenia") { Recuperar_contrasenia() }
     }
 }
 
