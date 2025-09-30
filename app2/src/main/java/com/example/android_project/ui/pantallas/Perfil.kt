@@ -47,7 +47,7 @@ fun Perfil() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(rememberScrollState()) // Scroll activado
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         // ---- Encabezado ----
@@ -87,7 +87,7 @@ fun Perfil() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ---- Sección dueño ----
+
         Text("Detalles Personales", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -112,7 +112,7 @@ fun Perfil() {
             colors = textFieldColors
         )
 
-        TextButton(onClick = { /* Acción cambiar contraseña */ }) {
+        TextButton(onClick = {  }) {
             Text("Cambiar Contraseña")
         }
 
@@ -216,9 +216,9 @@ fun Perfil() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // ---- Botón guardar ----
+
         Button(
-            onClick = { /* Acción guardar */ },
+            onClick = { },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

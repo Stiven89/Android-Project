@@ -39,7 +39,7 @@ fun Articulo2() {
                 contentDescription = "Volver",
                 tint = Color.Black,
                 modifier = Modifier
-                    .size(32.dp) // ajusta el tamaño a tu gusto
+                    .size(32.dp)
                     .align(Alignment.CenterStart)
             )
 
@@ -68,11 +68,11 @@ fun Articulo2() {
                     .height(180.dp),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White // Fondo blanco para que no tape la imagen
+                    containerColor = Color.White
                 )
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.articulo2), // <-- Reemplaza con tu imagen
+                    painter = painterResource(id = R.drawable.articulo2),
                     contentDescription = "Imagen de higiene",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()

@@ -126,7 +126,7 @@ fun DireccionActualSection() {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Título fuera de la caja
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.Filled.LocationOn,
@@ -144,7 +144,7 @@ fun DireccionActualSection() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Caja con la información de dirección
+        
         Row(
             modifier = Modifier
                 .fillMaxWidth()
