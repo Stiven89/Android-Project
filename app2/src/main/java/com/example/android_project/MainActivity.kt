@@ -14,6 +14,7 @@ import com.example.android_project.ui.theme.AndroidProjectTheme
 import com.example.android_project.ui.pantallas.Inicio
 import com.example.android_project.ui.pantallas.PantallaAlimentacion
 import com.example.android_project.ui.pantallas.Home
+import com.example.android_project.ui.pantallas.Rutas
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +36,9 @@ class MainActivity : ComponentActivity() {
 fun AppNavegacion() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "Rutas") {
         composable("home") { Home() }
+        composable("Rutas") { Rutas() }
         composable("inicio") { Inicio(navController) }
         composable("login") { PantallaLogin() }
         composable("alimentacion") { PantallaAlimentacion() }
