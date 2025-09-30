@@ -23,6 +23,7 @@ import com.example.android_project.ui.pantallas.Recuperar_contrasenia
 import com.example.android_project.ui.pantallas.Articulo3
 import com.example.android_project.ui.pantallas.Agenda
 import com.example.android_project.ui.pantallas.Recordatorios
+import com.example.android_project.ui.pantallas.PantallaLogin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ fun AppNavegacion() {
         composable("home") { Home() }
         composable("Rutas") { Rutas() }
         composable("inicio") { Inicio(navController) }
-        composable("login") { PantallaLogin() }
+        composable("login") { PantallaLogin(navController) }
         composable("alimentacion") { PantallaAlimentacion() }
         composable("Articulo1") { Articulo1() }
         composable("Articulo2") { Articulo2() }
@@ -58,18 +59,5 @@ fun AppNavegacion() {
         composable("Articulo3") { Articulo3() }
         composable("Perfil") { Perfil() }
         composable("Recuperar_contrasenia") { Recuperar_contrasenia() }
-    }
-}
-
-@Composable
-fun PantallaLogin() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Text(
-            text = "Pantalla de Login",
-            style = MaterialTheme.typography.headlineMedium
-        )
     }
 }

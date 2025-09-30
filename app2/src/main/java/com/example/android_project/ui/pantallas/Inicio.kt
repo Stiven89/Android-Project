@@ -15,46 +15,5 @@ import com.example.android_project.R
 
 @Composable
 fun Inicio(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // Imagen del logo (asegúrate de tener res/drawable/logo_petcare.png)
-            Image(
-                painter = painterResource(id = R.drawable.logo_petcare),
-                contentDescription = "Logo Pet Care",
-                modifier = Modifier.size(150.dp)
-            )
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            // Texto "Pet Care"
-            Text(
-                text = "Pet Care",
-                color = Color(0xFF2196F3), // Azul
-                style = MaterialTheme.typography.headlineMedium.copy(fontSize = 35.sp)
-            )
-        }
-
-        // Botón de "Acceder"
-        TextButton(
-            onClick = { navController.navigate("login") },
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 32.dp)
-        ) {
-            Text(
-                text = "Acceder",
-                color = Color(0xFF2196F3),
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp)
-            )
-        }
-    }
 }
