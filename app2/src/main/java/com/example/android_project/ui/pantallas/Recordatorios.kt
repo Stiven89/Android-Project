@@ -98,7 +98,7 @@ fun Recordatorios() {
         ) {
             // Imagen superior
             Image(
-                painter = painterResource(id = R.drawable.recordatorio),
+                painter = painterResource(id = R.drawable.recordatorio_superior),
                 contentDescription = "Recordatorio",
                 modifier = Modifier
                     .fillMaxWidth()
