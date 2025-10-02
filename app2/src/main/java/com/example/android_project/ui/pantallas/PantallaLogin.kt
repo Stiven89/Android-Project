@@ -53,10 +53,51 @@ fun PantallaLogin(navController: NavHostController) {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            Spacer(modifier = Modifier.height(12.dp))
+            label = { Text("Nombre de usuario") },
+            placeholder = { Text("Usuario") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = "Usuario",
+                    tint = Color.Gray
+                )
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedBorderColor = Color.Gray
+            )
+        )
 
-                    Text(
-                    text = "¿Perdiste tu contraseña?",
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Contraseña
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Contraseña") },
+            placeholder = { Text("Contraseña") },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Lock,
+                    contentDescription = "Contraseña",
+                    tint = Color.Gray
+                )
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedBorderColor = Color.Gray
+            )
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "¿Perdiste tu contraseña?",
             fontSize = 14.sp,
             color = Color(0xFF00A3FF),
             modifier = Modifier
@@ -129,7 +170,6 @@ fun PantallaLogin(navController: NavHostController) {
 
 @Composable
 fun SocialLoginButton(
-
     backgroundColor: Color,
     borderColor: Color,
     onClick: () -> Unit,
