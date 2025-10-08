@@ -15,11 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.android_project.R
 
 @Composable
-fun PantallaAlimentacion() {
-    // Estados para campos editables
+fun PantallaAlimentacion(navController: NavController) {
+    // Estados
     val tipoAlimento = remember { mutableStateOf("") }
     val cantidad = remember { mutableStateOf("1") }
     val unidad = remember { mutableStateOf("Gramos") }
@@ -45,41 +47,15 @@ fun PantallaAlimentacion() {
                 Text("Alimentación", style = MaterialTheme.typography.titleLarge)
 
                 IconButton(
-                    onClick = { /* Acción de regreso */ },
+                    onClick = { navController.popBackStack() },
                     modifier = Modifier.align(Alignment.CenterStart)
                 ) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Regresar")
                 }
             }
         },
-        //botones de abajo (true donde este)
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio") },
-                    selected = false,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
-                    label = { Text("Alimentación") },
-                    selected = true,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
-                    label = { Text("Rutas") },
-                    selected = false,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
-                    label = { Text("Recordatorios") },
-                    selected = false,
-                    onClick = {}
-                )
-            }
+            BottomNavigationBarAlimentacion(navController)
         }
     ) { padding ->
         Column(
@@ -88,7 +64,7 @@ fun PantallaAlimentacion() {
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Imagen
+            // Imagen + campo tipo alimento
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,23 +77,20 @@ fun PantallaAlimentacion() {
                     contentDescription = "Alimento",
                     modifier = Modifier
                         .size(100.dp)
-                        .clip(RoundedCornerShape(32.dp)) // Bordes redondeados
+                        .clip(RoundedCornerShape(32.dp))
                 )
 
-                Column(modifier = Modifier.weight(1f)) {
-                    OutlinedTextField(
-                        value = tipoAlimento.value,
-                        onValueChange = { tipoAlimento.value = it },
-                        label = { Text("Tipo de alimento") },
-                        placeholder = { Text("pienso, húmeda, casera") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                OutlinedTextField(
+                    value = tipoAlimento.value,
+                    onValueChange = { tipoAlimento.value = it },
+                    label = { Text("Tipo de alimento") },
+                    placeholder = { Text("pienso, húmeda, casera") },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Seleccionar
             Text("Cantidad en gramos o tazas", style = MaterialTheme.typography.titleMedium)
 
             Row(
@@ -128,12 +101,11 @@ fun PantallaAlimentacion() {
                     modifier = Modifier.width(300.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Selector Qty
+                    // Selector de cantidad
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedButton(onClick = { expandedCantidad.value = true }) {
                             Text("Qty: ${cantidad.value}")
                         }
-
                         DropdownMenu(
                             expanded = expandedCantidad.value,
                             onDismissRequest = { expandedCantidad.value = false }
@@ -150,12 +122,11 @@ fun PantallaAlimentacion() {
                         }
                     }
 
-                    // Seleccinar Unidad
+                    // Selector de unidad
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedButton(onClick = { expandedUnidad.value = true }) {
                             Text(unidad.value)
                         }
-
                         DropdownMenu(
                             expanded = expandedUnidad.value,
                             onDismissRequest = { expandedUnidad.value = false }
@@ -176,7 +147,6 @@ fun PantallaAlimentacion() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Notas
             Text("Notas", style = MaterialTheme.typography.titleMedium)
             OutlinedTextField(
                 value = notas.value,
@@ -187,32 +157,95 @@ fun PantallaAlimentacion() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Horarios
             Text("Horarios de comida (mañana, tarde, noche)", style = MaterialTheme.typography.titleMedium)
-            Text(
-                "Registra los horarios, tipo y cantidad de alimento " +
-                        "para mantener una dieta saludable y organizada para tu mascota."
-            )
+            Text("Registra los horarios, tipo y cantidad de alimento para mantener una dieta saludable.")
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedButton(onClick = { /* Acción para seleccionar fecha y hora */ }) {
+            OutlinedButton(onClick = { /* futuro selector de fecha y hora */ }) {
                 Text("Fecha y Hora")
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Boton guardar
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 Button(
-                    onClick = {
-                        // futuro
-                    },
+                    onClick = { /* acción guardar */ },
                     colors = ButtonDefaults.buttonColors(containerColor = azulGuardar)
                 ) {
                     Text("Guardar Cambios", color = Color.White)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun BottomNavigationBarAlimentacion(navController: NavController) {
+    val currentRoute = navController.currentDestination?.route
+
+    NavigationBar(
+        containerColor = Color.White,
+        contentColor = Color(0xFF4DA6FF)
+    ) {
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
+            label = { Text("Inicio") },
+            selected = currentRoute == "home",
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
+            label = { Text("Alimentación") },
+            selected = currentRoute == "alimentacion",
+            onClick = {
+                navController.navigate("alimentacion") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
+            label = { Text("Rutas") },
+            selected = currentRoute == "rutas",
+            onClick = {
+                navController.navigate("rutas") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
+            label = { Text("Recordatorios") },
+            selected = currentRoute == "recordatorios",
+            onClick = {
+                navController.navigate("recordatorios") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
     }
 }

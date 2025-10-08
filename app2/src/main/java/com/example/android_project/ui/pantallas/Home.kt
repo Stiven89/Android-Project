@@ -4,9 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.android_project.R
 
@@ -102,6 +104,9 @@ fun TopBar() {
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry.value?.destination?.route
+
     NavigationBar(
         containerColor = Color.White,
         contentColor = Color(0xFF4DA6FF)
@@ -109,26 +114,65 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
             label = { Text("Inicio") },
-            selected = false,
-            onClick = { navController.navigate("home") }
+            selected = currentRoute == "home",
+            onClick = {
+                navController.navigate("home") {
+                    launchSingleTop = true
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
             label = { Text("Alimentación") },
-            selected = false,
-            onClick = { navController.navigate("alimentacion") }
+            selected = currentRoute == "alimentacion",
+            onClick = {
+                navController.navigate("alimentacion") {
+                    launchSingleTop = true
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
             icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
             label = { Text("Rutas") },
-            selected = false,
-            onClick = { navController.navigate("rutas") }
+            selected = currentRoute == "rutas",
+            onClick = {
+                navController.navigate("rutas") {
+                    launchSingleTop = true
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
             label = { Text("Recordatorios") },
-            selected = false,
-            onClick = { navController.navigate("recordatorios") }
+            selected = currentRoute == "recordatorios",
+            onClick = {
+                navController.navigate("recordatorios") {
+                    launchSingleTop = true
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            }
         )
     }
 }

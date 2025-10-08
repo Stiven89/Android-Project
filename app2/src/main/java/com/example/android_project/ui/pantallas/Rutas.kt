@@ -22,6 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.rememberNavController
 import com.example.android_project.R
 
 data class Veterinaria(
@@ -35,22 +38,23 @@ data class Veterinaria(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RutasPreview() {
-    Rutas()
+    val navController = rememberNavController()
+    Rutas(navController)
 }
 
 @Composable
-fun Rutas() {
+fun Rutas(navController: NavController) {
     val veterinarias = listOf(
         Veterinaria(
             nombre = "Mascotas Pet",
-            nivel = "calificacion",
+            nivel = "calificación",
             telefono = "Teléfono: 317 3275656",
             imagen = R.drawable.rutas1,
             rating = 5
         ),
         Veterinaria(
             nombre = "Dog Tor Vet",
-            nivel = "calificacion",
+            nivel = "calificación",
             telefono = "Teléfono: 319 6880254",
             imagen = R.drawable.rutas2,
             rating = 5
@@ -58,8 +62,8 @@ fun Rutas() {
     )
 
     Scaffold(
-        topBar = { VeterinariaTopBar() },
-        bottomBar = { VeterinariaBottomBar() }
+        topBar = { VeterinariaTopBar(navController) },
+        bottomBar = { BottomNavigationBarRutas(navController) }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -89,7 +93,7 @@ fun Rutas() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VeterinariaTopBar() {
+fun VeterinariaTopBar(navController: NavController) {
     TopAppBar(
         title = {
             Box(
@@ -104,7 +108,7 @@ fun VeterinariaTopBar() {
             }
         },
         navigationIcon = {
-            IconButton(onClick = { /* Navegar atrás */ }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     Icons.Filled.ArrowBack,
                     contentDescription = "Volver",
@@ -126,7 +130,6 @@ fun DireccionActualSection() {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.Filled.LocationOn,
@@ -144,7 +147,6 @@ fun DireccionActualSection() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -160,21 +162,9 @@ fun DireccionActualSection() {
                     fontWeight = FontWeight.Medium,
                     color = Color.Black
                 )
-                Text(
-                    "Cra 7ta. No 89-C32,",
-                    fontSize = 9.sp,
-                    color = Color.Gray
-                )
-                Text(
-                    "Carrera 7, Localidad Chapi...",
-                    fontSize = 9.sp,
-                    color = Color.Gray
-                )
-                Text(
-                    "Contact: +57 312647 1824",
-                    fontSize = 9.sp,
-                    color = Color.Gray
-                )
+                Text("Cra 7ta. No 89-C32,", fontSize = 9.sp, color = Color.Gray)
+                Text("Carrera 7, Localidad Chapi...", fontSize = 9.sp, color = Color.Gray)
+                Text("Contact: +57 312647 1824", fontSize = 9.sp, color = Color.Gray)
             }
 
             Row {
@@ -214,8 +204,6 @@ fun DireccionActualSection() {
 
 @Composable
 fun VeterinariaCard(veterinaria: Veterinaria) {
-    var cantidad by remember { mutableStateOf(1) }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -237,61 +225,36 @@ fun VeterinariaCard(veterinaria: Veterinaria) {
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            veterinaria.nombre,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                Text(
+                    veterinaria.nombre,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
 
-                        Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                veterinaria.nivel,
-                                fontSize = 11.sp,
-                                color = Color.Black,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            repeat(veterinaria.rating) {
-                                Icon(
-                                    Icons.Filled.Star,
-                                    contentDescription = null,
-                                    tint = Color(0xFFFFC107),
-                                    modifier = Modifier.size(11.dp)
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            veterinaria.telefono,
-                            fontSize = 9.sp,
-                            color = Color.Gray
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        veterinaria.nivel,
+                        fontSize = 11.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    repeat(veterinaria.rating) {
+                        Icon(
+                            Icons.Filled.Star,
+                            contentDescription = null,
+                            tint = Color(0xFFFFC107),
+                            modifier = Modifier.size(11.dp)
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
-
-
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 6.dp, vertical = 3.dp)
-                ) {
-                    Text(
-                        "Horario: Abierto las 24 horas",
-                        fontSize = 8.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
+                Text(veterinaria.telefono, fontSize = 9.sp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text("Horario: Abierto las 24 horas", fontSize = 8.sp, fontWeight = FontWeight.Medium)
             }
         }
 
@@ -304,86 +267,63 @@ fun VeterinariaCard(veterinaria: Veterinaria) {
 }
 
 @Composable
-fun VeterinariaBottomBar() {
+fun BottomNavigationBarRutas(navController: NavController) {
+    val currentRoute = navController.currentDestination?.route
+
     NavigationBar(
         containerColor = Color.White,
-        contentColor = Color.Black
+        contentColor = Color(0xFF4DA6FF)
     ) {
         NavigationBarItem(
-            icon = {
-                Icon(
-                    Icons.Default.Home,
-                    contentDescription = "Inicio",
-                    modifier = Modifier.size(22.dp)
-                )
-            },
-            label = { Text("Inicio", fontSize = 10.sp) },
-            selected = false,
-            onClick = {},
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.Black,
-                selectedTextColor = Color.Black,
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray,
-                indicatorColor = Color.Transparent
-            )
+            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
+            label = { Text("Inicio") },
+            selected = currentRoute == "home",
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
-            icon = {
-                Icon(
-                    Icons.Default.Favorite,
-                    contentDescription = "Alimentación",
-                    modifier = Modifier.size(22.dp)
-                )
-            },
-            label = { Text("Alimentación", fontSize = 10.sp) },
-            selected = false,
-            onClick = {},
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.Black,
-                selectedTextColor = Color.Black,
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray,
-                indicatorColor = Color.Transparent
-            )
+            icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
+            label = { Text("Alimentación") },
+            selected = currentRoute == "alimentacion",
+            onClick = {
+                navController.navigate("alimentacion") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
-            icon = {
-                Icon(
-                    Icons.Default.Place,
-                    contentDescription = "Rutas",
-                    modifier = Modifier.size(22.dp)
-                )
-            },
-            label = { Text("Rutas", fontSize = 10.sp) },
-            selected = true,
-            onClick = {},
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color(0xFF03A9F4),
-                selectedTextColor = Color(0xFF03A9F4),
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray,
-                indicatorColor = Color.Transparent
-            )
+            icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
+            label = { Text("Rutas") },
+            selected = currentRoute == "rutas",
+            onClick = {
+                navController.navigate("rutas") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
         )
+
         NavigationBarItem(
-            icon = {
-                Icon(
-                    Icons.Default.Search,
-                    contentDescription = "Recordatorios",
-                    modifier = Modifier.size(22.dp)
-                )
-            },
-            label = { Text("Recordatorios", fontSize = 10.sp) },
-            selected = false,
-            onClick = {},
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.Black,
-                selectedTextColor = Color.Black,
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray,
-                indicatorColor = Color.Transparent
-            )
+            icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
+            label = { Text("Recordatorios") },
+            selected = currentRoute == "recordatorios",
+            onClick = {
+                navController.navigate("recordatorios") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.example.android_project.ui.pantallas
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.android_project.R
 
 @Composable
-fun Recordatorios() {
+fun Recordatorios(navController: NavController) {
     val detalle = remember { mutableStateOf("") }
-    val notas = remember { mutableStateOf("") }
-    var selected by remember { mutableStateOf("2") } //esta quemado en el boton 2
+    var selected by remember { mutableStateOf("2") } // Botón seleccionado
 
     Scaffold(
         topBar = {
@@ -38,19 +36,19 @@ fun Recordatorios() {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text ="Recordatorios",
+                    text = "Recordatorios",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                 )
 
-                // Botón atras
+                // Botón atrás
                 IconButton(
-                    onClick = { /* Acción de regreso */ },
+                    onClick = { navController.popBackStack() },
                     modifier = Modifier.align(Alignment.CenterStart)
                 ) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Regresar")
                 }
 
-                // Logo
+                // Logo lateral
                 Image(
                     painter = painterResource(id = R.drawable.logo_petcare),
                     contentDescription = "Logo PetCare",
@@ -63,32 +61,7 @@ fun Recordatorios() {
             }
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio") },
-                    selected = false,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
-                    label = { Text("Alimentación") },
-                    selected = false,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
-                    label = { Text("Rutas") },
-                    selected = false,
-                    onClick = {}
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
-                    label = { Text("Recordatorios") },
-                    selected = true,
-                    onClick = {}
-                )
-            }
+            BottomNavigationBar(navController = navController, selected = "recordatorios")
         }
     ) { padding ->
         Column(
@@ -109,7 +82,7 @@ fun Recordatorios() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botones de números
+            // Botones de Recordatorios
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -118,7 +91,7 @@ fun Recordatorios() {
                 Text(
                     text = "RECORDATORIOS",
                     fontSize = 14.sp,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -151,7 +124,7 @@ fun Recordatorios() {
                         ) {
                             Text(
                                 text = label,
-                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
@@ -168,15 +141,12 @@ fun Recordatorios() {
                 placeholder = { Text("Tipo (vacuna, cita, medicamento)") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-
-
-
+                    .padding(vertical = 8.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Texto explicativo
+            // Texto informativo
             Text(
                 "Nunca olvides una vacuna, cita médica o medicamento. " +
                         "Configura recordatorios personalizados para cada mascota " +
@@ -185,28 +155,24 @@ fun Recordatorios() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botones fecha y notas
+            // Botones de fecha y notas
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedButton(
                     onClick = { /* Acción fecha */ },
                     shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier
-                        .padding(end = 8.dp) // espacio entre botones
-                        .height(40.dp),
-
+                    modifier = Modifier.height(40.dp)
                 ) {
                     Text("Fecha y Hora", color = Color(0xFF828282))
                 }
+
                 OutlinedButton(
                     onClick = { /* Acción notas */ },
                     shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier
-                        .padding(end = 8.dp) // espacio entre botones
-                        .height(40.dp),
+                    modifier = Modifier.height(40.dp)
                 ) {
                     Text("Notas Especiales", color = Color(0xFF828282))
                 }
@@ -214,23 +180,22 @@ fun Recordatorios() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botones guardar y lista
+            // Botones Guardar / Lista
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
                     onClick = { /* Acción guardar */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF37A1F8)) ,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF37A1F8)),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.weight(2f)
                 ) {
                     Text("Guardar cambios", color = Color.White)
                 }
-                Spacer(modifier = Modifier.width(35.dp))
+
+                Spacer(modifier = Modifier.width(24.dp))
+
                 Button(
                     onClick = { /* Acción lista */ },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
@@ -242,5 +207,59 @@ fun Recordatorios() {
             }
         }
     }
+}
 
+/* 🔹 Barra de navegación inferior reutilizable entre pantallas */
+@Composable
+fun BottomNavigationBar(navController: NavController, selected: String) {
+    NavigationBar {
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, null) },
+            label = { Text("Inicio") },
+            selected = selected == "inicio",
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Favorite, null) },
+            label = { Text("Alimentación") },
+            selected = selected == "alimentacion",
+            onClick = {
+                navController.navigate("alimentacion") {
+                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Place, null) },
+            label = { Text("Rutas") },
+            selected = selected == "rutas",
+            onClick = {
+                navController.navigate("rutas") {
+                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Notifications, null) },
+            label = { Text("Recordatorios") },
+            selected = selected == "recordatorios",
+            onClick = {
+                navController.navigate("recordatorios") {
+                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+    }
 }
