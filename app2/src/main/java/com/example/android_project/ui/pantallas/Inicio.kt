@@ -15,47 +15,56 @@ import com.example.android_project.R
 
 @Composable
 fun Inicio(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // Imagen del logo
-            Image(
-                painter = painterResource(id = R.drawable.logo_petcare),
-                contentDescription = "Logo Pet Care",
-                modifier = Modifier.size(150.dp)
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            // Texto "Pet Care"
-            Text(
-                text = "Pet Care",
-                color = Color(0xFF2196F3), // Azul
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 35.sp)
-
-            )
-        }
-
-        // boton de "Acceder"
-        TextButton(
-            onClick = { navController.navigate("login") }, // redirigir a la pantalla de iniciar sesion
+    Scaffold { padding ->
+        Box(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 32.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Acceder",
-                color = Color(0xFF2196F3), // Azul
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 22.sp)
-            )
+            // Logo y título principal
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_petcare),
+                    contentDescription = "Logo Pet Care",
+                    modifier = Modifier.size(150.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Pet Care",
+                    color = Color(0xFF2196F3),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 35.sp)
+                )
+            }
+
+            // Botones inferiores
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 80.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TextButton(onClick = { navController.navigate("login") }) {
+                    Text(
+                        text = "Acceder",
+                        color = Color(0xFF2196F3),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 22.sp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                TextButton(onClick = { navController.navigate("home") }) {
+                    Text(
+                        text = "Home",
+                        color = Color(0xFF2196F3),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 22.sp)
+                    )
+                }
+            }
         }
     }
 }

@@ -19,19 +19,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.android_project.R
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomePreview() {
-    Home()
+    val navController = rememberNavController()
+    Home(navController)
 }
 
 @Composable
-fun Home() {
+fun Home(navController: NavController) {
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -98,7 +101,7 @@ fun TopBar() {
 }
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navController: NavController) {
     NavigationBar(
         containerColor = Color.White,
         contentColor = Color(0xFF4DA6FF)
@@ -106,26 +109,26 @@ fun BottomNavigationBar() {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
             label = { Text("Inicio") },
-            selected = true,
-            onClick = {}
+            selected = false,
+            onClick = { navController.navigate("home") }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
             label = { Text("Alimentación") },
             selected = false,
-            onClick = {}
+            onClick = { navController.navigate("alimentacion") }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
             label = { Text("Rutas") },
             selected = false,
-            onClick = {}
+            onClick = { navController.navigate("rutas") }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
             label = { Text("Recordatorios") },
             selected = false,
-            onClick = {}
+            onClick = { navController.navigate("recordatorios") }
         )
     }
 }
