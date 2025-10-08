@@ -15,34 +15,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.android_project.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
-
 @Composable
-fun Articulo3() {
+fun Articulo3(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
     ) {
-        // Barra superior
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(16.dp)
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Volver",
-                tint = Color.Black,
-                modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.CenterStart)
-            )
-
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
 
             Image(
                 painter = painterResource(id = R.drawable.dog_logo),
@@ -53,15 +55,13 @@ fun Articulo3() {
             )
         }
 
-        // Contenido
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp)
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-
-            // Card con imagen en todo el espacio
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,7 +82,7 @@ fun Articulo3() {
             Spacer(modifier = Modifier.height(30.dp))
 
             Text(
-                text = "Higiene basica y cuidado del pelaje ",
+                text = "Higiene básica y cuidado del pelaje",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -93,7 +93,7 @@ fun Articulo3() {
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "La higiene básica de una mascota es fundamental para mantener su salud y bienestar, e incluye aspectos como el baño periódico según su tipo de pelaje y especie, el cepillado regular para evitar enredos y eliminar el pelo muerto, la limpieza de oídos y ojos para prevenir infecciones, el corte de uñas para evitar molestias al caminar, y la higiene bucal para cuidar sus dientes y encías. Además, es importante mantener limpia su cama, juguetes y el lugar donde come, así como proporcionarle agua fresca y alimentos en recipientes lavados diariamente",
+                text = "La higiene básica de una mascota es fundamental para mantener su salud y bienestar. Incluye el baño periódico según su tipo de pelaje, el cepillado regular para evitar enredos y eliminar el pelo muerto, la limpieza de oídos y ojos para prevenir infecciones, el corte de uñas para evitar molestias al caminar y la higiene bucal para cuidar dientes y encías. Además, mantener limpia su cama, juguetes y recipientes de comida y agua es esencial para su bienestar.",
                 fontSize = 14.sp,
                 color = Color.Black,
                 textAlign = TextAlign.Justify,

@@ -1,10 +1,11 @@
 package com.example.android_project.ui.pantallas
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,19 +17,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.android_project.R
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-
 
 @Composable
-fun Articulo1() {
+fun Articulo1(navController: NavController) {   // ✅ Recibe el NavController
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
     ) {
-        // Barra superior
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -42,15 +41,14 @@ fun Articulo1() {
             )
 
 
-            // Botón atras
             IconButton(
-                onClick = { /* Acción de regreso */ },
+                onClick = { navController.popBackStack() },  // ✅ Acción corregida
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "Regresar")
             }
 
-            // Logo
+
             Image(
                 painter = painterResource(id = R.drawable.logo_petcare),
                 contentDescription = "Logo PetCare",
@@ -61,7 +59,7 @@ fun Articulo1() {
             )
         }
 
-        // Contenido
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,15 +67,13 @@ fun Articulo1() {
         ) {
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Card con imagen en todo el espacio
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                )
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.articulo1),
@@ -90,7 +86,7 @@ fun Articulo1() {
             Spacer(modifier = Modifier.height(30.dp))
 
             Text(
-                text = "¿Como subirle las defensas a tu perro? ",
+                text = "¿Cómo subirle las defensas a tu perro?",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,

@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,65 +17,68 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.android_project.R
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-
 
 @Composable
-fun Articulo2() {
+fun Articulo2(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
     ) {
-        // Barra superior
+        // 🔹 Barra superior
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(64.dp)
                 .background(Color.White)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Volver",
-                tint = Color.Black,
-                modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.CenterStart)
+            Text(
+                text = "Artículo 2",
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
 
+            // 🔹 Botón atrás funcional
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Volver", tint = Color.Black)
+            }
 
+            // 🔹 Logo lateral derecho
             Image(
-                painter = painterResource(id = R.drawable.dog_logo),
-                contentDescription = "Logo perrito",
+                painter = painterResource(id = R.drawable.logo_petcare),
+                contentDescription = "Logo PetCare",
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(60.dp)
                     .align(Alignment.CenterEnd)
+                    .padding(end = 10.dp)
             )
         }
 
-        // Contenido
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
+                .padding(25.dp)
         ) {
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Card con imagen en todo el espacio
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                )
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.articulo2),
-                    contentDescription = "Imagen de higiene",
+                    contentDescription = "Ejercicio mascota",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -82,8 +87,8 @@ fun Articulo2() {
             Spacer(modifier = Modifier.height(30.dp))
 
             Text(
-                text = "Rutinas de ejercicio y juego recomendados para tu mascota ",
-                fontSize = 28.sp,
+                text = "Rutinas de ejercicio y juego recomendadas para tu mascota",
+                fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 textAlign = TextAlign.Center,
@@ -102,4 +107,3 @@ fun Articulo2() {
         }
     }
 }
-

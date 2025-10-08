@@ -39,9 +39,9 @@ fun AppNavegacion() {
         composable("rutas") { Rutas(navController) }
         composable("login") { PantallaLogin(navController) }
         composable("alimentacion") { PantallaAlimentacion(navController) }
-        composable("articulo1") { Articulo1() }
-        composable("articulo2") { Articulo2() }
-        composable("articulo3") { Articulo3() }
+        composable("articulo1") { Articulo1(navController) }
+        composable("articulo2") { Articulo2(navController)  }
+        composable("articulo3") { Articulo3(navController)}
         composable("crear_cuenta") { Crear_cuenta() }
         composable("agenda") { Agenda() }
         composable("recordatorios") { Recordatorios(navController) }
