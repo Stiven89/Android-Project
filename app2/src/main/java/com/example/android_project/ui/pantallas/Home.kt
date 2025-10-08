@@ -1,6 +1,7 @@
 package com.example.android_project.ui.pantallas
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,7 +45,7 @@ fun Home(navController: NavController) {
                 .fillMaxSize()
         ) {
             ReminderSection()
-            UsefulArticlesSection()
+            UsefulArticlesSection(navController)
         }
     }
 }
@@ -218,7 +219,7 @@ fun ReminderSection() {
 }
 
 @Composable
-fun UsefulArticlesSection() {
+fun UsefulArticlesSection(navController: NavController) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(
             "Artículos útiles",
@@ -226,19 +227,22 @@ fun UsefulArticlesSection() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(12.dp))
-        ArticleCard(imageRes = R.drawable.articulo1)
-        ArticleCard(imageRes = R.drawable.articulo2)
-        ArticleCard(imageRes = R.drawable.articulo2)
+
+        // 🔹 Cada artículo navega a su respectiva pantalla
+        ArticleCard(imageRes = R.drawable.articulo1, onClick = { navController.navigate("articulo1") })
+        ArticleCard(imageRes = R.drawable.articulo2, onClick = { navController.navigate("articulo2") })
+        ArticleCard(imageRes = R.drawable.articulo3, onClick = { navController.navigate("articulo3") })
     }
 }
 
 @Composable
-fun ArticleCard(imageRes: Int) {
+fun ArticleCard(imageRes: Int, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .padding(vertical = 6.dp),
+            .padding(vertical = 6.dp)
+            .clickable { onClick() }, // 🔹 Acción al presionar
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
