@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavegacion() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "alimentacion") {
+    NavHost(navController = navController, startDestination = "Inicio") {
         composable("home") { Home() }
         composable("Rutas") { Rutas() }
         composable("inicio") { Inicio(navController) }
