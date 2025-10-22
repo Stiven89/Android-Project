@@ -36,9 +36,10 @@ fun HomePreview() {
 @Composable
 fun Home(navController: NavController) {
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(navController) },
         bottomBar = { BottomNavigationBar(navController) }
-    ) { innerPadding ->
+    )
+    { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -52,7 +53,7 @@ fun Home(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     TopAppBar(
         title = {
             Box(
@@ -82,9 +83,13 @@ fun TopBar() {
                     contentDescription = "Mi Perfil",
                     modifier = Modifier
                         .size(60.dp)
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .clickable {
+                            navController.navigate("Perfil")
+                        },
                     contentScale = ContentScale.Crop
                 )
+
                 Text(
                     "Mi\nPerfil",
                     fontSize = 10.sp,
@@ -242,7 +247,7 @@ fun ArticleCard(imageRes: Int, onClick: () -> Unit) {
             .fillMaxWidth()
             .height(180.dp)
             .padding(vertical = 6.dp)
-            .clickable { onClick() }, // 🔹 Acción al presionar
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {

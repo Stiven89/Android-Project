@@ -2,6 +2,7 @@ package com.example.android_project.ui.pantallas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -19,18 +20,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.android_project.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Perfil() {
+fun Perfil(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
     var ciudad by remember { mutableStateOf("") }
-    var Localidad by remember { mutableStateOf("") }
-    var Pais by remember { mutableStateOf("") }
+    var localidad by remember { mutableStateOf("") }
+    var pais by remember { mutableStateOf("") }
     var nombreMascota by remember { mutableStateOf("") }
     var razaMascota by remember { mutableStateOf("") }
     var edadMascota by remember { mutableStateOf("") }
@@ -59,7 +61,11 @@ fun Perfil() {
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Atrás",
                 tint = Color.Black,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        navController.popBackStack() // 🔙 Regresa a la pantalla anterior
+                    }
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
@@ -87,7 +93,7 @@ fun Perfil() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-
+        // ---- Detalles personales ----
         Text("Detalles Personales", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -112,7 +118,7 @@ fun Perfil() {
             colors = textFieldColors
         )
 
-        TextButton(onClick = {  }) {
+        TextButton(onClick = { /* Acción cambiar contraseña */ }) {
             Text("Cambiar Contraseña")
         }
 
@@ -157,19 +163,20 @@ fun Perfil() {
 
         Text("Localidad")
         OutlinedTextField(
-            value = Localidad,
-            onValueChange = { Localidad = it },
-            placeholder = { Text("puente aranda") },
+            value = localidad,
+            onValueChange = { localidad = it },
+            placeholder = { Text("Puente Aranda") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = textFieldColors
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        Text("Pais")
+
+        Text("País")
         OutlinedTextField(
-            value = Pais,
-            onValueChange = { Pais = it },
+            value = pais,
+            onValueChange = { pais = it },
             placeholder = { Text("Colombia") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
@@ -216,9 +223,9 @@ fun Perfil() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-
+        // ---- Botón guardar ----
         Button(
-            onClick = { },
+            onClick = { /* Acción guardar perfil */ },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

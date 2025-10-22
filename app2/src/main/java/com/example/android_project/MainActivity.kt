@@ -43,9 +43,9 @@ fun AppNavegacion() {
         composable("articulo2") { Articulo2(navController)  }
         composable("articulo3") { Articulo3(navController)}
         composable("crear_cuenta") { Crear_cuenta() }
-        composable("agenda") { Agenda() }
+        composable("agenda") { Agenda(navController) }
         composable("recordatorios") { Recordatorios(navController) }
-        composable("perfil") { Perfil() }
+        composable("perfil") { Perfil(navController) }
         composable("recuperar_contrasenia") { Recuperar_contrasenia() }
     }
 }

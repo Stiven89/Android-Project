@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import com.example.android_project.R
 
 @Composable
-fun Articulo1(navController: NavController) {   // ✅ Recibe el NavController
+fun Articulo1(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -197,7 +197,7 @@ fun Recordatorios(navController: NavController) {
                 Spacer(modifier = Modifier.width(24.dp))
 
                 Button(
-                    onClick = { /* Acción lista */ },
+                    onClick = { navController.navigate("agenda") },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.weight(1f)
