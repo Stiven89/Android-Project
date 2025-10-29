@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1054113765993",
-    "project_id": "androidproject-679616e9",
-    "storage_bucket": "androidproject-679616e9.firebasestorage.app"
+    "project_number": "897343543591",
+    "project_id": "petcare-c5916",
+    "storage_bucket": "petcare-c5916.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1054113765993:android:e03abee5e9d104bc2b20f8",
+        "mobilesdk_app_id": "1:897343543591:android:6527b2284ad8f36393b102",
         "android_client_info": {
           "package_name": "com.example.android_project"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBsN9xx1he4xD-C8_73myQVOJwt99u1mZg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1054113765993:android:c15ffdcd031453e72b20f8",
-        "android_client_info": {
-          "package_name": "com.example.app2"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBsN9xx1he4xD-C8_73myQVOJwt99u1mZg"
+          "current_key": "AIzaSyBQmObGiQnObtfotjRBgQ80bUweY4RYZxU"
         }
       ],
       "services": {
