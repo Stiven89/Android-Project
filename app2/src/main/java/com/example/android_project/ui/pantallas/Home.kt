@@ -50,15 +50,18 @@ fun Home(navController: NavController) {
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
     TopAppBar(
         title = {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+            // 🔹 Centramos el logo visualmente sin el ícono del menú
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 60.dp), // Ajusta si el logo se ve levemente corrido
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.bg_blue_box),
@@ -68,12 +71,8 @@ fun TopBar(navController: NavController) {
                 )
             }
         },
-        navigationIcon = {
-            IconButton(onClick = { /* Acción menú */ }) {
-                Icon(Icons.Filled.Menu, contentDescription = "Menu")
-            }
-        },
         actions = {
+            // 🔹 Sección del perfil (imagen + texto)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(end = 10.dp)
@@ -91,7 +90,7 @@ fun TopBar(navController: NavController) {
                 )
 
                 Text(
-                    "Mi\nPerfil",
+                    text = "Mi\nPerfil",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -101,12 +100,12 @@ fun TopBar(navController: NavController) {
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White,
-            titleContentColor = Color.Black,
-            navigationIconContentColor = Color.Black
+            titleContentColor = Color.Black
         ),
         modifier = Modifier.height(115.dp)
     )
 }
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {

@@ -134,7 +134,7 @@ fun Crear_cuenta(navController: NavHostController? = null) {
                 username = it.trim()
                 errorMessage = ""
             },
-            label = { Text("Nombre de usuario") },
+            label = { Text("Correo electrónico") },
             placeholder = { Text("Usuario") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
