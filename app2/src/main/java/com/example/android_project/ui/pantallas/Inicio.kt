@@ -58,14 +58,6 @@ fun Inicio(navController: NavController) {
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-                TextButton(onClick = { navController.navigate("home") }) {
-                    Text(
-                        text = "Home",
-                        color = Color(0xFF2196F3),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 22.sp)
-                    )
-                }
             }
         }
     }
