@@ -104,8 +104,8 @@ fun PantallaLogin(navController: NavHostController) {
                 email = it
                 errorMessage = ""
             },
-            label = { Text("Nombre de usuario") },
-            placeholder = { Text("Usuario") },
+            label = { Text("Correo electrónico") },
+            placeholder = { Text("Correo electrónico") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             leadingIcon = {

@@ -55,47 +55,56 @@ fun Home(navController: NavController) {
 fun TopBar(navController: NavController) {
     TopAppBar(
         title = {
-            // 🔹 Centramos el logo visualmente sin el ícono del menú
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 60.dp), // Ajusta si el logo se ve levemente corrido
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 10.dp)
+                    .height(100.dp), // define altura total de la barra
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically // centra verticalmente
             ) {
+                // Logo del perrito (izquierda)
                 Image(
-                    painter = painterResource(id = R.drawable.bg_blue_box),
-                    contentDescription = "Logo Pet Care",
-                    modifier = Modifier.size(140.dp),
+                    painter = painterResource(id = R.drawable.logo_face),
+                    contentDescription = "Logo Pet Face",
+                    modifier = Modifier.size(80.dp),
                     contentScale = ContentScale.Fit
                 )
-            }
-        },
-        actions = {
-            // 🔹 Sección del perfil (imagen + texto)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(end = 10.dp)
-            ) {
+
+                // Logo del nombre centrado (Pet Care)
                 Image(
-                    painter = painterResource(id = R.drawable.ic_profile),
-                    contentDescription = "Mi Perfil",
+                    painter = painterResource(id = R.drawable.name),
+                    contentDescription = "Nombre Pet Care",
                     modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                        .clickable {
-                            navController.navigate("Perfil")
-                        },
-                    contentScale = ContentScale.Crop
+                        .size(140.dp)
+                        .padding(top = 4.dp),
+                    contentScale = ContentScale.Fit
                 )
 
-                Text(
-                    text = "Mi\nPerfil",
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 12.sp
-                )
+                // Sección del perfil
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(end = 5.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_profile),
+                        contentDescription = "Mi Perfil",
+                        modifier = Modifier
+                            .size(55.dp)
+                            .clip(CircleShape)
+                            .clickable {
+                                navController.navigate("Perfil")
+                            },
+                        contentScale = ContentScale.Crop
+                    )
+                    Text(
+                        text = "Mi\nPerfil",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 12.sp
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

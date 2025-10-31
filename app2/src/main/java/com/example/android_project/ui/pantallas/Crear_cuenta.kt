@@ -36,7 +36,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun Crear_cuenta(navController: NavHostController? = null) {
+fun Crear_cuenta(navController: NavHostController? = null ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -135,7 +135,7 @@ fun Crear_cuenta(navController: NavHostController? = null) {
                 errorMessage = ""
             },
             label = { Text("Correo electrónico") },
-            placeholder = { Text("Usuario") },
+            placeholder = { Text("Correo electrónico") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             leadingIcon = {
