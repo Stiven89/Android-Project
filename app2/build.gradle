@@ -3,19 +3,16 @@ import java.util.Properties
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id "com.google.gms.google-services"
 }
 
 android {
     namespace = "com.example.android_project"
     compileSdk = 35
 
-    // Cargar propiedades del keystore si existe
+    // Cargar propiedades del keystore solo si existe
     def keystorePropertiesFile = rootProject.file("keystore.properties")
     def keystoreProperties = new Properties()
-    def keystoreExists = keystorePropertiesFile.exists()
-
-    if (keystoreExists) {
+    if (keystorePropertiesFile.exists()) {
         keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
     }
 
@@ -30,11 +27,14 @@ android {
 
     signingConfigs {
         release {
-            if (keystoreExists) {
+            if (keystorePropertiesFile.exists()) {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
-                storeFile rootProject.file(keystoreProperties['storeFile'])
+                storeFile file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
+            } else {
+                // Evitar error en CI: usar una configuración vacía
+                println("⚠️ No se encontró keystore.properties. Se usará debug keystore.")
             }
         }
     }
@@ -42,20 +42,20 @@ android {
     buildTypes {
         release {
             minifyEnabled = false
-            if (keystoreExists) {
-                signingConfig signingConfigs.release
-            }
+            signingConfig signingConfigs.release
             proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
             )
         }
-
-        // 🔧 Bloque debug corregido:
         debug {
-            // Siempre permitir generar el APK de debug,
-            // incluso en GitHub Actions, sin depender del keystore
-            signingConfig null
+            // Solo usa release keystore si existe
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                // Usa la firma debug por defecto (segura para CI)
+                println("ℹ️ Usando firma debug por defecto")
+            }
         }
     }
 
@@ -81,37 +81,4 @@ android {
             useLegacyPackaging = false
         }
     }
-}
-
-dependencies {
-    // Testing
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    // AndroidX & Material
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-
-    // Compose
-    implementation platform("androidx.compose:compose-bom:2024.09.01")
-    implementation "androidx.compose.ui:ui"
-    implementation "androidx.compose.foundation:foundation"
-    implementation "androidx.compose.material3:material3"
-    implementation "androidx.compose.ui:ui-tooling-preview"
-    debugImplementation "androidx.compose.ui:ui-tooling"
-
-    // UI Test con versión explícita
-    androidTestImplementation platform("androidx.compose:compose-bom:2024.09.01")
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
-    debugImplementation "androidx.compose.ui:ui-test-manifest"
-
-    // Navigation Compose
-    implementation "androidx.navigation:navigation-compose:2.7.7"
-
-    // Firebase
-    implementation platform("com.google.firebase:firebase-bom:33.5.1")
-    implementation "com.google.firebase:firebase-auth-ktx"
-    implementation "com.google.firebase:firebase-firestore-ktx"
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
 }
