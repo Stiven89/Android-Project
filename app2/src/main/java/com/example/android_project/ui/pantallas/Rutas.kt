@@ -1,5 +1,7 @@
 package com.example.android_project.ui.pantallas
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +35,10 @@ data class Veterinaria(
     val nivel: String,
     val telefono: String,
     val imagen: Int,
-    val rating: Int
+    val rating: Int,
+    val direccion: String,
+    val latitud: Double,
+    val longitud: Double
 )
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -50,14 +56,20 @@ fun Rutas(navController: NavController) {
             nivel = "calificación",
             telefono = "Teléfono: 317 3275656",
             imagen = R.drawable.rutas1,
-            rating = 5
+            rating = 5,
+            direccion = "Calle 85 #15-20, Bogotá",
+            latitud = 4.6686,
+            longitud = -74.0568
         ),
         Veterinaria(
             nombre = "Dog Tor Vet",
             nivel = "calificación",
             telefono = "Teléfono: 319 6880254",
             imagen = R.drawable.rutas2,
-            rating = 5
+            rating = 5,
+            direccion = "Carrera 7 #89-32, Bogotá",
+            latitud = 4.6800,
+            longitud = -74.0500
         )
     )
 
@@ -204,6 +216,8 @@ fun DireccionActualSection() {
 
 @Composable
 fun VeterinariaCard(veterinaria: Veterinaria) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -252,9 +266,75 @@ fun VeterinariaCard(veterinaria: Veterinaria) {
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(12.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        veterinaria.direccion,
+                        fontSize = 9.sp,
+                        color = Color.Gray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(veterinaria.telefono, fontSize = 9.sp, color = Color.Gray)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text("Horario: Abierto las 24 horas", fontSize = 8.sp, fontWeight = FontWeight.Medium)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Botón para abrir Google Maps
+                Button(
+                    onClick = {
+                        // Opción 1: Abrir con coordenadas
+                        val gmmIntentUri = Uri.parse("geo:${veterinaria.latitud},${veterinaria.longitud}?q=${veterinaria.latitud},${veterinaria.longitud}(${veterinaria.nombre})")
+
+                        // Opción 2 (alternativa): Abrir con dirección
+                        // val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(veterinaria.direccion)}")
+
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+
+                        // Verificar si Google Maps está instalado
+                        if (mapIntent.resolveActivity(context.packageManager) != null) {
+                            context.startActivity(mapIntent)
+                        } else {
+                            // Si no está instalado, abrir en navegador
+                            val webIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}")
+                            )
+                            context.startActivity(webIntent)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4285F4)
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Icon(
+                        Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Cómo llegar",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
+                }
             }
         }
 
