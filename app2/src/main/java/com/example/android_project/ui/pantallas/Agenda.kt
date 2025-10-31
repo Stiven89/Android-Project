@@ -173,7 +173,7 @@ fun Agenda(navController: NavController) {
 
 
             Button(
-                onClick = { /* Acción añadir */ },
+                onClick = { navController.navigate("recordatorios") },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth(0.5f),
