@@ -228,7 +228,7 @@ fun BottomNavigationBarAgenda(navController: NavController, selected: String) {
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, null) },
-            label = { Text("Recordatorios") },
+            label = { Text("Tareas") },
             selected = selected == "recordatorios",
             onClick = {
                 navController.navigate("recordatorios") {

@@ -1,3 +1,4 @@
+
 package com.example.android_project.ui.pantallas
 
 import androidx.compose.foundation.Image
@@ -45,7 +46,7 @@ fun Home(navController: NavController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            ReminderSection()
+            //ReminderSection()
             UsefulArticlesSection(navController)
         }
     }
@@ -175,7 +176,7 @@ fun BottomNavigationBar(navController: NavController) {
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
-            label = { Text("Recordatorios") },
+            label = { Text("Tareas") },
             selected = currentRoute == "recordatorios",
             onClick = {
                 navController.navigate("recordatorios") {
@@ -191,45 +192,6 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
-@Composable
-fun ReminderSection() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(
-            "Recordatorios",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Card(
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF4DA6FF)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        "Oferta del día",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                    Text(
-                        "🕒 20h 15m 20s restantes",
-                        color = Color.White,
-                        fontSize = 12.sp
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun UsefulArticlesSection(navController: NavController) {

@@ -235,7 +235,7 @@ fun BottomNavigationBarAlimentacion(navController: NavController) {
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
-            label = { Text("Recordatorios") },
+            label = { Text("Tareas") },
             selected = currentRoute == "recordatorios",
             onClick = {
                 navController.navigate("recordatorios") {
