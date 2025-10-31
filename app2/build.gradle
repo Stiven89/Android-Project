@@ -53,8 +53,13 @@ android {
         }
 
         debug {
-            // Usa el keystore de debug estándar de Android Studio
-            signingConfig null
+            if (System.getenv("CI") != null && keystoreExists) {
+
+                signingConfig signingConfigs.release
+            } else {
+
+                signingConfig null
+            }
         }
     }
 
