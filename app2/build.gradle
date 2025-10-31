@@ -43,7 +43,6 @@ android {
     buildTypes {
         release {
             minifyEnabled = false
-            // Solo usar release signing si el keystore existe
             if (keystoreExists) {
                 signingConfig signingConfigs.release
             }
@@ -52,14 +51,13 @@ android {
                     "proguard-rules.pro"
             )
         }
+
         debug {
-            // Solo usar release keystore si existe (para desarrollo local)
-            if (keystoreExists) {
-                signingConfig signingConfigs.release
-            }
-            // Si no existe, usará el debug keystore por defecto
+            // Usa el keystore de debug estándar de Android Studio
+            signingConfig null
         }
     }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
