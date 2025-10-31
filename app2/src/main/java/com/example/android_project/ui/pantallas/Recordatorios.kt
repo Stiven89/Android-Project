@@ -1,5 +1,6 @@
 package com.example.android_project.ui.pantallas
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,17 +16,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android_project.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun Recordatorios(navController: NavController) {
     val detalle = remember { mutableStateOf("") }
-    var selected by remember { mutableStateOf("2") } // Botón seleccionado
+    //var selected by remember { mutableStateOf("2") } // Botón seleccionado
+
+    // 🔹 Contexto para mostrar el DatePickerDialog
+    val context = LocalContext.current
+
+    // 🔹 Estado para guardar la fecha seleccionada
+    var selectedDate by remember { mutableStateOf("") }
+
+    // 🔹 Calendario para iniciar el diálogo
+    val calendar = Calendar.getInstance()
+
+    // 🔹 Formato de fecha
+    val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    // 🔹 Crear el diálogo del calendario
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            selectedDate = dateFormatter.format(calendar.time)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
 
     Scaffold(
         topBar = {
@@ -36,7 +65,7 @@ fun Recordatorios(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Recordatorios",
+                    text = "Tareas",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                 )
 
@@ -73,7 +102,7 @@ fun Recordatorios(navController: NavController) {
             // Imagen superior
             Image(
                 painter = painterResource(id = R.drawable.recordatorio_superior),
-                contentDescription = "Recordatorio",
+                contentDescription = "Tareas",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
@@ -83,53 +112,7 @@ fun Recordatorios(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botones de Recordatorios
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
-            ) {
-                Text(
-                    text = "RECORDATORIOS",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    listOf("1", "2", "3", "4", "+").forEach { label ->
-                        OutlinedButton(
-                            onClick = { selected = label },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(45.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            border = ButtonDefaults.outlinedButtonBorder.copy(
-                                brush = SolidColor(Color(0xFF37A1F8))
-                            ),
-                            colors = if (selected == label) {
-                                ButtonDefaults.outlinedButtonColors(
-                                    containerColor = Color(0xFF37A1F8),
-                                    contentColor = Color.White
-                                )
-                            } else {
-                                ButtonDefaults.outlinedButtonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = Color(0xFF37A1F8)
-                                )
-                            }
-                        ) {
-                            Text(
-                                text = label,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                }
-            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -149,8 +132,7 @@ fun Recordatorios(navController: NavController) {
             // Texto informativo
             Text(
                 "Nunca olvides una vacuna, cita médica o medicamento. " +
-                        "Configura recordatorios personalizados para cada mascota " +
-                        "y recibe alertas en el momento justo…"
+                        "Configura tareas personalizados para cada mascota "
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -162,20 +144,16 @@ fun Recordatorios(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedButton(
-                    onClick = { /* Acción fecha */ },
+                    onClick = { datePickerDialog.show() },
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier.height(40.dp)
                 ) {
-                    Text("Fecha y Hora", color = Color(0xFF828282))
+                    Text(
+                        text = if (selectedDate.isNotEmpty()) selectedDate else "Seleccionar fecha",
+                        color = Color(0xFF828282)
+                    )
                 }
 
-                OutlinedButton(
-                    onClick = { /* Acción notas */ },
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier.height(40.dp)
-                ) {
-                    Text("Notas Especiales", color = Color(0xFF828282))
-                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
