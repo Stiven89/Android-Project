@@ -13,7 +13,9 @@ android {
     // Cargar propiedades del keystore
     def keystorePropertiesFile = rootProject.file("keystore.properties")
     def keystoreProperties = new Properties()
-    if (keystorePropertiesFile.exists()) {
+    def keystoreExists = keystorePropertiesFile.exists()
+
+    if (keystoreExists) {
         keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
     }
 
@@ -29,10 +31,9 @@ android {
 
     signingConfigs {
         release {
-            if (keystorePropertiesFile.exists()) {
+            if (keystoreExists) {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
-                // Usar rootProject para buscar desde la raíz del proyecto
                 storeFile rootProject.file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
             }
@@ -42,15 +43,21 @@ android {
     buildTypes {
         release {
             minifyEnabled = false
-            signingConfig signingConfigs.release
+            // Solo usar release signing si el keystore existe
+            if (keystoreExists) {
+                signingConfig signingConfigs.release
+            }
             proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
             )
         }
         debug {
-            // Para desarrollo, también usar el release keystore
-            signingConfig signingConfigs.release
+            // Solo usar release keystore si existe (para desarrollo local)
+            if (keystoreExists) {
+                signingConfig signingConfigs.release
+            }
+            // Si no existe, usará el debug keystore por defecto
         }
     }
 
