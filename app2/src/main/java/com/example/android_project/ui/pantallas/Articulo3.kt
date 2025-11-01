@@ -22,9 +22,9 @@ import com.example.android_project.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.filled.Check
+
 
 @Composable
 fun Articulo3(navController: NavController) {
@@ -34,9 +34,9 @@ fun Articulo3(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF5F5F5))
+                .background(Color(0xFFF5F9FF))
         ) {
-            // Header con botones
+            // Encabezado
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -50,7 +50,7 @@ fun Articulo3(navController: NavController) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Volver",
-                        tint = Color.Black,
+                        tint = Color(0xFF1976D2),
                         modifier = Modifier.size(32.dp)
                     )
                 }
@@ -64,7 +64,7 @@ fun Articulo3(navController: NavController) {
                         Icon(
                             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                             contentDescription = "Favorito",
-                            tint = if (isFavorite) Color.Red else Color.Gray,
+                            tint = if (isFavorite) Color(0xFF1976D2) else Color.Gray,
                             modifier = Modifier.size(28.dp)
                         )
                     }
@@ -77,7 +77,7 @@ fun Articulo3(navController: NavController) {
                 }
             }
 
-            // Contenido scrolleable
+            // Contenido
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -86,15 +86,12 @@ fun Articulo3(navController: NavController) {
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Imagen principal
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(180.dp),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    )
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.articulo3),
@@ -113,9 +110,7 @@ fun Articulo3(navController: NavController) {
                 ) {
                     Card(
                         shape = RoundedCornerShape(20.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFFE3F2FD)
-                        )
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
                     ) {
                         Text(
                             text = "⏱️ 5 min de lectura",
@@ -128,21 +123,21 @@ fun Articulo3(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Título
+
                 Text(
-                    text = "Higiene básica y cuidado del pelaje",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = "HIGIENE BÁSICA Y CUIDADO DEL PELAJE",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,         // negrita
                     color = Color.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
 
+
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Introducción
                 Text(
-                    text = "La higiene básica de una mascota es fundamental para mantener su salud y bienestar. Incluye el baño periódico según su tipo de pelaje, el cepillado regular para evitar enredos y eliminar el pelo muerto, la limpieza de oídos y ojos para prevenir infecciones, el corte de uñas para evitar molestias al caminar y la higiene bucal para cuidar dientes y encías.",
+                    text = "Mantener la higiene de tu mascota no solo mejora su aspecto, sino también su salud. Un pelaje limpio y cuidado ayuda a prevenir enfermedades cutáneas y promueve una convivencia más sana en casa.",
                     fontSize = 14.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Justify,
@@ -151,22 +146,18 @@ fun Articulo3(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // Sección de tips destacados
+                // ===== CONSEJOS CLAVE (NEGRITA) =====
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFFFF3E0)
-                    )
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
                         Text(
-                            text = "💡 Consejos clave",
+                            text = "CONSEJOS CLAVE",
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFE65100)
+                            fontWeight = FontWeight.Bold,         // negrita
+                            color = Color.Black
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -181,63 +172,55 @@ fun Articulo3(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // Secciones detalladas
                 SeccionArticulo(
                     titulo = "🛁 Baño y limpieza",
-                    contenido = "La frecuencia del baño depende del tipo de pelaje y estilo de vida de tu mascota. Los perros generalmente necesitan baños cada 2-4 semanas, mientras que los gatos se asean solos. Usa productos específicos para mascotas y agua tibia."
+                    contenido = "Usa productos específicos para mascotas y agua tibia. Los baños regulares eliminan suciedad y parásitos, y fortalecen el vínculo entre tú y tu mascota."
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 SeccionArticulo(
                     titulo = "✂️ Cepillado del pelaje",
-                    contenido = "El cepillado regular previene nudos, elimina pelo muerto y distribuye los aceites naturales. Las razas de pelo largo requieren cepillado diario, mientras que las de pelo corto pueden cepillarse 2-3 veces por semana."
+                    contenido = "Cepillar el pelaje mantiene la piel oxigenada y libre de enredos. Adapta la frecuencia según la longitud del pelo."
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 SeccionArticulo(
                     titulo = "👂 Cuidado de oídos y ojos",
-                    contenido = "Revisa semanalmente los oídos en busca de enrojecimiento, mal olor o secreciones. Limpia suavemente con productos veterinarios. Los ojos deben estar limpios; retira cualquier secreción con una gasa húmeda."
+                    contenido = "Mantén los oídos y ojos limpios con productos adecuados. Revisa si hay enrojecimiento o mal olor, y consulta al veterinario si notas algo inusual."
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 SeccionArticulo(
                     titulo = "💅 Corte de uñas",
-                    contenido = "Las uñas largas pueden causar dolor y problemas al caminar. Córtalas cada 3-4 semanas usando cortauñas específicos. Ten cuidado de no cortar la parte viva de la uña que contiene vasos sanguíneos."
+                    contenido = "Unas uñas largas pueden incomodar al caminar. Córtalas con cuidado cada pocas semanas, o pide ayuda a un profesional."
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 SeccionArticulo(
                     titulo = "🦷 Higiene dental",
-                    contenido = "La salud bucal es crucial. Cepilla los dientes de tu mascota 2-3 veces por semana con pasta dental específica para animales. Los juguetes dentales y las revisiones veterinarias regulares también son importantes."
+                    contenido = "Usa pasta dental especial para mascotas y cepilla sus dientes regularmente. La prevención evita el mal aliento y enfermedades bucales."
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // Nota importante
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFE8F5E9)
-                    )
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
                 ) {
                     Row(
                         modifier = Modifier.padding(16.dp),
                         verticalAlignment = Alignment.Top
                     ) {
+                        Text("ℹ️", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp))
                         Text(
-                            text = "ℹ️",
-                            fontSize = 24.sp,
-                            modifier = Modifier.padding(end = 12.dp)
-                        )
-                        Text(
-                            text = "Recuerda: Cada mascota es única. Consulta con tu veterinario para establecer una rutina de higiene personalizada según las necesidades específicas de tu compañero.",
+                            text = "Cada mascota es diferente. Consulta con tu veterinario para definir una rutina de higiene personalizada.",
                             fontSize = 13.sp,
-                            color = Color(0xFF2E7D32),
+                            color = Color(0xFF0D47A1),
                             lineHeight = 18.sp
                         )
                     }
@@ -245,45 +228,28 @@ fun Articulo3(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // Artículos relacionados
+
                 Text(
-                    text = "Artículos relacionados",
+                    text = "ARTÍCULOS RELACIONADOS",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    fontWeight = FontWeight.Bold,         // negrita
+                    color = Color.Black             // azul
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                ArticuloRelacionado(
-                    titulo = "Nutrición canina básica",
-                    onClick = { navController.navigate("articulo1") }
-                )
+                ArticuloRelacionado("Nutrición canina básica") {
+                    navController.navigate("articulo1")
+                }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                ArticuloRelacionado(
-                    titulo = "Ejercicio y actividad física",
-                    onClick = { navController.navigate("articulo2") }
-                )
+                ArticuloRelacionado("Ejercicio y actividad física") {
+                    navController.navigate("articulo2")
+                }
 
                 Spacer(modifier = Modifier.height(100.dp))
             }
-        }
-
-        // Botón flotante de compartir
-        FloatingActionButton(
-            onClick = { /* Implementar compartir */ },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp),
-            containerColor = Color(0xFF00A3FF),
-            contentColor = Color.White
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = "Compartir artículo"
-            )
         }
     }
 }
@@ -299,16 +265,14 @@ fun TipItem(texto: String) {
         Icon(
             imageVector = Icons.Filled.Check,
             contentDescription = null,
-            tint = Color(0xFF4CAF50),
-            modifier = Modifier
-                .size(20.dp)
-                .padding(top = 2.dp)
+            tint = Color(0xFF1565C0),
+            modifier = Modifier.size(20.dp).padding(top = 2.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = texto,
             fontSize = 13.sp,
-            color = Color(0xFF5D4037),
+            color = Color(0xFF0D47A1),
             lineHeight = 18.sp
         )
     }
@@ -321,7 +285,7 @@ fun SeccionArticulo(titulo: String, contenido: String) {
             text = titulo,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = Color(0xFF1976D2)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -337,12 +301,9 @@ fun SeccionArticulo(titulo: String, contenido: String) {
 @Composable
 fun ArticuloRelacionado(titulo: String, onClick: () -> Unit) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         onClick = onClick
     ) {
         Row(
@@ -351,23 +312,15 @@ fun ArticuloRelacionado(titulo: String, onClick: () -> Unit) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "📄",
-                fontSize = 24.sp,
-                modifier = Modifier.padding(end = 12.dp)
-            )
+            Text("📄", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp))
             Text(
                 text = titulo,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black,
+                color = Color(0xFF0D47A1),
                 modifier = Modifier.weight(1f)
             )
-            Text(
-                text = "→",
-                fontSize = 20.sp,
-                color = Color(0xFF00A3FF)
-            )
+            Text("→", fontSize = 20.sp, color = Color(0xFF1976D2))
         }
     }
 }
