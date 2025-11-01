@@ -47,5 +47,7 @@ fun AppNavegacion() {
         composable("recordatorios") { Recordatorios(navController) }
         composable("perfil") { Perfil(navController) }
         composable("recuperar_contrasenia") { Recuperar_contrasenia() }
+        composable("perfil_edit") { PerfilEdit(navController) }
+
     }
 }
