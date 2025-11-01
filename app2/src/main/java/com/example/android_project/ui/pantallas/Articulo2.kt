@@ -138,7 +138,7 @@ fun Articulo2(navController: NavController) {
                         text = "CONSEJOS CLAVE",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1976D2)
+                        color = Color.Black
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
