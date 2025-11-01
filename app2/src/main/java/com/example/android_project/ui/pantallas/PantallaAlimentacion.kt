@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -18,10 +20,25 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.android_project.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+
+data class RegistroAlimentacion(
+    val id: String = "",
+    val tipo: String = "",
+    val cantidad: String = "",
+    val unidad: String = "",
+    val notas: String = ""
+)
 
 @Composable
 fun PantallaAlimentacion(navController: NavController) {
-    // Estados
+    val firestore = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val scope = rememberCoroutineScope()
+
+    // Estados del formulario
     val tipoAlimento = remember { mutableStateOf("") }
     val cantidad = remember { mutableStateOf("1") }
     val unidad = remember { mutableStateOf("Gramos") }
@@ -35,9 +52,37 @@ fun PantallaAlimentacion(navController: NavController) {
 
     val azulGuardar = Color(0xFF37A1F8)
 
+    // Estado para los registros guardados
+    var registros by remember { mutableStateOf(listOf<RegistroAlimentacion>()) }
+
+    // 🔹 Cargar los registros guardados del usuario
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            firestore.collection("users")
+                .document(userId)
+                .collection("alimentacion")
+                .addSnapshotListener { snapshot, _ ->
+                    if (snapshot != null) {
+                        registros = snapshot.documents.mapNotNull {
+                            val tipo = it.getString("tipo") ?: return@mapNotNull null
+                            val cantidad = it.getString("cantidad") ?: ""
+                            val unidad = it.getString("unidad") ?: ""
+                            val notas = it.getString("notas") ?: ""
+                            RegistroAlimentacion(
+                                id = it.id,
+                                tipo = tipo,
+                                cantidad = cantidad,
+                                unidad = unidad,
+                                notas = notas
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
     Scaffold(
         topBar = {
-            // Barra superior
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -45,7 +90,6 @@ fun PantallaAlimentacion(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 Text("Alimentación", style = MaterialTheme.typography.titleLarge)
-
                 IconButton(
                     onClick = { navController.popBackStack() },
                     modifier = Modifier.align(Alignment.CenterStart)
@@ -55,8 +99,9 @@ fun PantallaAlimentacion(navController: NavController) {
             }
         },
         bottomBar = {
-            BottomNavigationBarAlimentacion(navController)
+            BottomNavigationBar( navController = navController, selected = "alimentacion")
         }
+
     ) { padding ->
         Column(
             modifier = Modifier
@@ -155,97 +200,71 @@ fun PantallaAlimentacion(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Horarios de comida (mañana, tarde, noche)", style = MaterialTheme.typography.titleMedium)
-            Text("Registra los horarios, tipo y cantidad de alimento para mantener una dieta saludable.")
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedButton(onClick = { /* futuro selector de fecha y hora */ }) {
-                Text("Fecha y Hora")
-            }
-
             Spacer(modifier = Modifier.height(24.dp))
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Button(
-                    onClick = { /* acción guardar */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = azulGuardar)
-                ) {
-                    Text("Guardar Cambios", color = Color.White)
+            Button(
+                onClick = {
+                    val tipo = tipoAlimento.value.trim()
+                    if (tipo.isNotEmpty() && userId != null) {
+                        val nuevaRef = firestore.collection("users")
+                            .document(userId)
+                            .collection("alimentacion")
+                            .document()
+
+                        val registro = RegistroAlimentacion(
+                            id = nuevaRef.id,
+                            tipo = tipo,
+                            cantidad = cantidad.value,
+                            unidad = unidad.value,
+                            notas = notas.value
+                        )
+
+                        scope.launch {
+                            nuevaRef.set(registro)
+                                .addOnSuccessListener {
+                                    tipoAlimento.value = ""
+                                    notas.value = ""
+                                }
+                                .addOnFailureListener {
+                                    // Puedes mostrar un Toast si deseas
+                                }
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = azulGuardar),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Guardar Cambios", color = Color.White)
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // 🔹 Mostrar registros guardados
+            Text("Registros Guardados", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (registros.isEmpty()) {
+                Text("Aún no hay registros de alimentación.")
+            } else {
+                LazyColumn {
+                    items(registros) { registro ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFF2F2F2))
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
+                                Text("🍽 ${registro.tipo}", style = MaterialTheme.typography.bodyLarge)
+                                Text("Cantidad: ${registro.cantidad} ${registro.unidad}")
+                                if (registro.notas.isNotEmpty()) {
+                                    Text("Notas: ${registro.notas}")
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBarAlimentacion(navController: NavController) {
-    val currentRoute = navController.currentDestination?.route
-
-    NavigationBar(
-        containerColor = Color.White,
-        contentColor = Color(0xFF4DA6FF)
-    ) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio") },
-            selected = currentRoute == "home",
-            onClick = {
-                navController.navigate("home") {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = "Alimentación") },
-            label = { Text("Alimentación") },
-            selected = currentRoute == "alimentacion",
-            onClick = {
-                navController.navigate("alimentacion") {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Place, contentDescription = "Rutas") },
-            label = { Text("Rutas") },
-            selected = currentRoute == "rutas",
-            onClick = {
-                navController.navigate("rutas") {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Notifications, contentDescription = "Recordatorios") },
-            label = { Text("Tareas") },
-            selected = currentRoute == "recordatorios",
-            onClick = {
-                navController.navigate("recordatorios") {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }
-        )
     }
 }
