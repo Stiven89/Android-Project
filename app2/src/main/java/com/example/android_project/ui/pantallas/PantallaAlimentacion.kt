@@ -1,12 +1,11 @@
 package com.example.android_project.ui.pantallas
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -22,7 +22,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.android_project.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.launch
 
 data class RegistroAlimentacion(
     val id: String = "",
@@ -36,16 +35,16 @@ data class RegistroAlimentacion(
 fun PantallaAlimentacion(navController: NavController) {
     val firestore = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
-    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     // Estados del formulario
-    val tipoAlimento = remember { mutableStateOf("") }
-    val cantidad = remember { mutableStateOf("1") }
-    val unidad = remember { mutableStateOf("Gramos") }
-    val notas = remember { mutableStateOf("") }
+    var tipoAlimento by remember { mutableStateOf("") }
+    var cantidad by remember { mutableStateOf("1") }
+    var unidad by remember { mutableStateOf("Gramos") }
+    var notas by remember { mutableStateOf("") }
 
-    val expandedCantidad = remember { mutableStateOf(false) }
-    val expandedUnidad = remember { mutableStateOf(false) }
+    var expandedCantidad by remember { mutableStateOf(false) }
+    var expandedUnidad by remember { mutableStateOf(false) }
 
     val opcionesCantidad = listOf("1", "2", "3", "4", "5")
     val opcionesUnidades = listOf("Gramos", "Tazas")
@@ -54,30 +53,40 @@ fun PantallaAlimentacion(navController: NavController) {
 
     // Estado para los registros guardados
     var registros by remember { mutableStateOf(listOf<RegistroAlimentacion>()) }
+    var isLoading by remember { mutableStateOf(true) }
 
-    // 🔹 Cargar los registros guardados del usuario
+    // Cargar los registros guardados del usuario
     LaunchedEffect(userId) {
         if (userId != null) {
             firestore.collection("users")
                 .document(userId)
                 .collection("alimentacion")
-                .addSnapshotListener { snapshot, _ ->
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        Toast.makeText(context, "Error al cargar registros", Toast.LENGTH_SHORT).show()
+                        isLoading = false
+                        return@addSnapshotListener
+                    }
+
                     if (snapshot != null) {
-                        registros = snapshot.documents.mapNotNull {
-                            val tipo = it.getString("tipo") ?: return@mapNotNull null
-                            val cantidad = it.getString("cantidad") ?: ""
-                            val unidad = it.getString("unidad") ?: ""
-                            val notas = it.getString("notas") ?: ""
-                            RegistroAlimentacion(
-                                id = it.id,
-                                tipo = tipo,
-                                cantidad = cantidad,
-                                unidad = unidad,
-                                notas = notas
-                            )
+                        registros = snapshot.documents.mapNotNull { doc ->
+                            try {
+                                RegistroAlimentacion(
+                                    id = doc.id,
+                                    tipo = doc.getString("tipo") ?: "",
+                                    cantidad = doc.getString("cantidad") ?: "",
+                                    unidad = doc.getString("unidad") ?: "",
+                                    notas = doc.getString("notas") ?: ""
+                                )
+                            } catch (e: Exception) {
+                                null
+                            }
                         }
                     }
+                    isLoading = false
                 }
+        } else {
+            isLoading = false
         }
     }
 
@@ -99,9 +108,8 @@ fun PantallaAlimentacion(navController: NavController) {
             }
         },
         bottomBar = {
-            BottomNavigationBar( navController = navController, selected = "alimentacion")
+            BottomNavigationBar(navController = navController, selected = "alimentacion")
         }
-
     ) { padding ->
         Column(
             modifier = Modifier
@@ -126,8 +134,8 @@ fun PantallaAlimentacion(navController: NavController) {
                 )
 
                 OutlinedTextField(
-                    value = tipoAlimento.value,
-                    onValueChange = { tipoAlimento.value = it },
+                    value = tipoAlimento,
+                    onValueChange = { tipoAlimento = it },
                     label = { Text("Tipo de alimento") },
                     placeholder = { Text("pienso, húmeda, casera") },
                     modifier = Modifier.fillMaxWidth()
@@ -148,19 +156,22 @@ fun PantallaAlimentacion(navController: NavController) {
                 ) {
                     // Selector de cantidad
                     Box(modifier = Modifier.weight(1f)) {
-                        OutlinedButton(onClick = { expandedCantidad.value = true }) {
-                            Text("Qty: ${cantidad.value}")
+                        OutlinedButton(
+                            onClick = { expandedCantidad = true },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Qty: $cantidad")
                         }
                         DropdownMenu(
-                            expanded = expandedCantidad.value,
-                            onDismissRequest = { expandedCantidad.value = false }
+                            expanded = expandedCantidad,
+                            onDismissRequest = { expandedCantidad = false }
                         ) {
                             opcionesCantidad.forEach { opcion ->
                                 DropdownMenuItem(
                                     text = { Text(opcion) },
                                     onClick = {
-                                        cantidad.value = opcion
-                                        expandedCantidad.value = false
+                                        cantidad = opcion
+                                        expandedCantidad = false
                                     }
                                 )
                             }
@@ -169,19 +180,22 @@ fun PantallaAlimentacion(navController: NavController) {
 
                     // Selector de unidad
                     Box(modifier = Modifier.weight(1f)) {
-                        OutlinedButton(onClick = { expandedUnidad.value = true }) {
-                            Text(unidad.value)
+                        OutlinedButton(
+                            onClick = { expandedUnidad = true },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(unidad)
                         }
                         DropdownMenu(
-                            expanded = expandedUnidad.value,
-                            onDismissRequest = { expandedUnidad.value = false }
+                            expanded = expandedUnidad,
+                            onDismissRequest = { expandedUnidad = false }
                         ) {
                             opcionesUnidades.forEach { opcion ->
                                 DropdownMenuItem(
                                     text = { Text(opcion) },
                                     onClick = {
-                                        unidad.value = opcion
-                                        expandedUnidad.value = false
+                                        unidad = opcion
+                                        expandedUnidad = false
                                     }
                                 )
                             }
@@ -194,42 +208,49 @@ fun PantallaAlimentacion(navController: NavController) {
 
             Text("Notas", style = MaterialTheme.typography.titleMedium)
             OutlinedTextField(
-                value = notas.value,
-                onValueChange = { notas.value = it },
+                value = notas,
+                onValueChange = { notas = it },
                 placeholder = { Text("Escribe tus notas aquí") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    val tipo = tipoAlimento.value.trim()
-                    if (tipo.isNotEmpty() && userId != null) {
-                        val nuevaRef = firestore.collection("users")
-                            .document(userId)
-                            .collection("alimentacion")
-                            .document()
-
-                        val registro = RegistroAlimentacion(
-                            id = nuevaRef.id,
-                            tipo = tipo,
-                            cantidad = cantidad.value,
-                            unidad = unidad.value,
-                            notas = notas.value
-                        )
-
-                        scope.launch {
-                            nuevaRef.set(registro)
-                                .addOnSuccessListener {
-                                    tipoAlimento.value = ""
-                                    notas.value = ""
-                                }
-                                .addOnFailureListener {
-                                    // Puedes mostrar un Toast si deseas
-                                }
-                        }
+                    val tipo = tipoAlimento.trim()
+                    if (tipo.isEmpty()) {
+                        Toast.makeText(context, "Ingresa el tipo de alimento", Toast.LENGTH_SHORT).show()
+                        return@Button
                     }
+
+                    if (userId == null) {
+                        Toast.makeText(context, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    val registro = hashMapOf(
+                        "tipo" to tipo,
+                        "cantidad" to cantidad,
+                        "unidad" to unidad,
+                        "notas" to notas,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    firestore.collection("users")
+                        .document(userId)
+                        .collection("alimentacion")
+                        .add(registro)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Registro guardado", Toast.LENGTH_SHORT).show()
+                            tipoAlimento = ""
+                            notas = ""
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = azulGuardar),
                 modifier = Modifier.fillMaxWidth()
@@ -239,26 +260,45 @@ fun PantallaAlimentacion(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 🔹 Mostrar registros guardados
+            // Mostrar registros guardados
             Text("Registros Guardados", style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
 
-            if (registros.isEmpty()) {
-                Text("Aún no hay registros de alimentación.")
-            } else {
-                LazyColumn {
-                    items(registros) { registro ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFF2F2F2))
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Text("🍽 ${registro.tipo}", style = MaterialTheme.typography.bodyLarge)
-                                Text("Cantidad: ${registro.cantidad} ${registro.unidad}")
-                                if (registro.notas.isNotEmpty()) {
-                                    Text("Notas: ${registro.notas}")
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                registros.isEmpty() -> {
+                    Text(
+                        "Aún no hay registros de alimentación.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+                else -> {
+                    // Usar Column en lugar de LazyColumn porque ya estamos en scroll
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        registros.forEach { registro ->
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF2F2F2))
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    Text("🍽 ${registro.tipo}", style = MaterialTheme.typography.bodyLarge)
+                                    Text("Cantidad: ${registro.cantidad} ${registro.unidad}")
+                                    if (registro.notas.isNotEmpty()) {
+                                        Text("Notas: ${registro.notas}")
+                                    }
                                 }
                             }
                         }
@@ -266,5 +306,59 @@ fun PantallaAlimentacion(navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun BottomNavigationBaralimentacion(navController: NavController, selected: String) {
+    NavigationBar {
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, contentDescription = null) },
+            label = { Text("Inicio") },
+            selected = selected == "inicio",
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
+            label = { Text("Alimentación") },
+            selected = selected == "alimentacion",
+            onClick = {
+                navController.navigate("alimentacion") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Place, contentDescription = null) },
+            label = { Text("Rutas") },
+            selected = selected == "rutas",
+            onClick = {
+                navController.navigate("rutas") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Notifications, contentDescription = null) },
+            label = { Text("Tareas") },
+            selected = selected == "recordatorios",
+            onClick = {
+                navController.navigate("recordatorios") {
+                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
     }
 }
