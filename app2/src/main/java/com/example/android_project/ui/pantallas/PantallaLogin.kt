@@ -152,14 +152,6 @@ fun PantallaLogin(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(
-            text = "¿Perdiste tu contraseña?",
-            fontSize = 14.sp,
-            color = Color(0xFF00A3FF),
-            modifier = Modifier
-                .align(Alignment.End)
-                .clickable { navController.navigate("recuperar_contrasenia") }
-        )
 
         // Mostrar mensaje de error si existe
         if (errorMessage.isNotEmpty()) {
@@ -234,7 +226,7 @@ fun PantallaLogin(navController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Botón social (Google)
-        SocialButton(
+        SocialLoginButton(
             backgroundColor = Color.White,
             borderColor = Color(0xFFE0E0E0),
             onClick = {
